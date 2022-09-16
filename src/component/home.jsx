@@ -1,8 +1,5 @@
 import React from "react"
-import man from "../assets/man.png"
-import hero from "../assets/Hero-image.png"
-import wave from "../assets/wave.png"
-import image from "../assets/Image.png"
+import hero from "../assets/HeroImage.png"
 import { Product } from "../component/product"
 
 const Home = () => {
