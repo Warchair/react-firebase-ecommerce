@@ -3,7 +3,7 @@ import pants from "../assets/short2.jpg"
 
 const Cart = () => {
 	return (
-		<div className='xl:container xl:mx-auto px-6  py-4'>
+		<div className='xl:container xl:mx-auto px-6 py-4'>
 			<div className='flex md:flex-row flex-col md:gap-10 gap-3'>
 				<div className='grow'>
 					<h1 className='lg:text-2xl md:text-xl text-lg font-semibold'>Cart</h1>
@@ -106,7 +106,7 @@ const Cart = () => {
 						<div className='md:block hidden'>
 							<h4 className='text-lg font-semibold'>Shopping Summary</h4>
 							<div className='flex justify-between items-center py-2 border-b border-b-gray-300 '>
-								<p>Total Price (0 Piece)</p>
+								<p>Total Price (0 Pc)</p>
 								<p>0</p>
 							</div>
 						</div>

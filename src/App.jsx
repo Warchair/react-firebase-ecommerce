@@ -5,19 +5,34 @@ import Home from "./component/home"
 import Navbar from "./component/navbar"
 import { Routes, Route } from "react-router-dom"
 import AddProduct from "./component/AddProduct"
+import Protected from "./component/protected"
 
 function App() {
-	const [count, setCount] = useState(0)
-
 	return (
-		<div className='font-poppins bg-white w-full min-h-screen'>
+		<div className='font-poppins bg-white  w-full min-h-screen relative'>
 			<Navbar />
-			<Routes>
-				<Route path='/' element={<Home />} />
-				<Route path='/cart' element={<Cart />} />
-				<Route path='/create' element={<AddProduct />} />
-				<Route path='/product/:type/:id' element={<DetailProduct />} />
-			</Routes>
+			<div className='pt-[72px]'>
+				<Routes>
+					<Route path='/' element={<Home />} />
+					<Route
+						path='/cart'
+						element={
+							<Protected>
+								<Cart />
+							</Protected>
+						}
+					/>
+					<Route
+						path='/create'
+						element={
+							<Protected>
+								<AddProduct />
+							</Protected>
+						}
+					/>
+					<Route path='/product/:type/:id' element={<DetailProduct />} />
+				</Routes>
+			</div>
 		</div>
 	)
 }

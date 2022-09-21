@@ -1,11 +1,65 @@
-import React from "react"
+import { collection, getDocs } from "firebase/firestore"
+import React, { useState, useEffect } from "react"
 import hero from "../assets/HeroImage.png"
 import { Product } from "../component/product"
+import { db } from "../firebase.config"
+import { categoryWomens } from "./AddProduct"
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
+import "react-loading-skeleton/dist/skeleton.css"
 
 const Home = () => {
+	const [data, setData] = useState([])
+	const [filter, setFilter] = useState(data)
+	const [isLoading, setIsLoading] = useState(true)
+
+	useEffect(() => {
+		const getData = async () => {
+			setIsLoading(true)
+			const collectionsWomens = collection(db, "women's")
+			const Womens = await getDocs(collectionsWomens)
+			const DataWomens = Womens.docs.map((doc) => ({
+				...doc.data(),
+				id: doc.id,
+			}))
+			setData(DataWomens)
+			setFilter(DataWomens)
+			setIsLoading(false)
+		}
+		return () => {
+			getData()
+		}
+	}, [])
+
+	const FilterProduct = (e) => {
+		const filtering = data.filter((item) => item.category === e)
+		setFilter(filtering)
+	}
+
+	const Loading = () => (
+		<div className='mt-5 flex flex-row gap-5 overflow-y-auto'>
+			{Array(6)
+				.fill(1)
+				.map((el, i) => (
+					<div className=' bg-white rounded-md drop-shadow-md hover:drop-shadow-lg border cursor-pointer w-[200px] flex-none'>
+						<div className='aspect-square w-full '>
+							<Skeleton className='w-full h-full' />
+						</div>
+						<div className='p-2'>
+							<Skeleton className='w-full' />
+							<Skeleton className='w-full' />
+							<Skeleton className='w-[70px]' />
+							<Skeleton className='w-[70px]' />
+						</div>
+					</div>
+				))}
+		</div>
+	)
+
+	// console.log(data)
+
 	return (
 		<div>
-			<div className='w-full  bg-orange-200 '>
+			<div className='w-full bg-orange-200 '>
 				<div className='xl:container xl:mx-auto px-6 py-4  flex md:flex-row flex-col-reverse'>
 					<div className='w-full flex  justify-center items-center'>
 						<div className=''>
@@ -36,30 +90,20 @@ const Home = () => {
 						Women's Clothings
 					</h1>
 					<div className='flex justify-center items-center gap-10 font-poppins mt-5'>
-						<a
-							href=''
-							className='border-b border-b-gray-100 hover:border-b-gray-800 font-medium'>
-							Dress
-						</a>
-						<a
-							href=''
-							className='border-b border-gray-100 hover:border-b-gray-800 font-medium'>
-							Jaket
-						</a>
-						<a
-							href=''
-							className='border-b border-gray-100 hover:border-b-gray-800 font-medium'>
-							Kerudung
-						</a>
-						<a
-							href=''
-							className='border-b border-gray-100 hover:border-b-gray-800 font-medium'>
-							Jeans
-						</a>
+						<span
+							className='cursor-pointer border-b border-b-gray-100 hover:border-b-gray-800 font-medium'
+							onClick={() => setFilter(data)}>
+							All
+						</span>
+						{categoryWomens.map((item) => (
+							<span
+								className='cursor-pointer border-b border-b-gray-100 hover:border-b-gray-800 font-medium'
+								onClick={() => FilterProduct(item)}>
+								{item}
+							</span>
+						))}
 					</div>
-					<div className='mt-5 flex flex-row gap-5 overflow-y-auto'>
-						<Product />
-					</div>
+					{isLoading ? <Loading /> : <Product data={filter} />}
 				</div>
 			</div>
 		</div>
