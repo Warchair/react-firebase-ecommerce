@@ -41,8 +41,8 @@ const Navbar = () => {
 
 	return (
 		<div className='fixed w-full h-[72px] bg-white z-[99] drop-shadow-sm '>
-			<div className='xl:container xl:mx-auto    '>
-				<div className='w-full px-6 py-4 flex lg:flex-row flex-col lg:items-center lg:justify-between '>
+			<div className='xl:container xl:mx-auto '>
+				<div className='w-full px-6 py-4 flex lg:flex-row flex-col lg:items-center lg:justify-between bg-white'>
 					<div className='flex justify-between items-center '>
 						<div>
 							<Link to='/'>
@@ -70,7 +70,9 @@ const Navbar = () => {
 						</div>
 					</div>
 					<div
-						className={`lg:pt-0 pt-3  ${isOpen ? "block" : "lg:block hidden"}`}>
+						className={`lg:pt-0 pt-3   ${
+							isOpen ? "block" : "lg:block hidden"
+						}`}>
 						<ul className='flex lg:flex-row flex-col md:gap-5 gap-3 font-Poppins font-medium'>
 							<li className='cursor-pointer'>
 								<Link to='/'>Home</Link>
@@ -90,7 +92,7 @@ const Navbar = () => {
 						</ul>
 					</div>
 					<div
-						className={`lg:pt-0 pt-3 ${isOpen ? "block" : "lg:block hidden"}`}>
+						className={`lg:pt-0 pt-3  ${isOpen ? "block" : "lg:block hidden"}`}>
 						<div className='flex lg:flex-row flex-col lg:items-center text-center md:gap-5 gap-3 font-Poppins font-medium'>
 							<Link to='/cart' className='cursor-pointer relative flex gap-3'>
 								<svg

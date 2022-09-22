@@ -5,6 +5,11 @@ import { Product } from "../component/product"
 import { db } from "../firebase.config"
 import { categoryWomens } from "./AddProduct"
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
+import { Swiper, SwiperSlide } from "swiper/react"
+// Import Swiper styles
+import "swiper/css"
+// import required modules
+import { FreeMode } from "swiper"
 import "react-loading-skeleton/dist/skeleton.css"
 
 const Home = () => {
@@ -36,23 +41,31 @@ const Home = () => {
 	}
 
 	const Loading = () => (
-		<div className='mt-5 flex flex-row gap-5 overflow-y-auto'>
-			{Array(6)
-				.fill(1)
-				.map((el, i) => (
-					<div className=' bg-white rounded-md drop-shadow-md hover:drop-shadow-lg border cursor-pointer w-[200px] flex-none'>
-						<div className='aspect-square w-full '>
-							<Skeleton className='w-full h-full' />
-						</div>
-						<div className='p-2'>
-							<Skeleton className='w-full' />
-							<Skeleton className='w-full' />
-							<Skeleton className='w-[70px]' />
-							<Skeleton className='w-[70px]' />
-						</div>
-					</div>
-				))}
-		</div>
+		<>
+			<Swiper
+				freeMode={true}
+				grabCursor={true}
+				modules={[FreeMode]}
+				slidesPerView={"auto"}
+				spaceBetween={30}
+				className='mt-5 flex flex-row gap-5 overflow-y-auto py-5 mySwiper'>
+				{Array(8)
+					.fill(1)
+					.map((el, i) => (
+						<SwiperSlide className='rounded-md border cursor-pointer w-[200px] flex-none'>
+							<div className='aspect-square w-full -mt-1'>
+								<Skeleton className='w-full h-full' />
+							</div>
+							<div className='p-2'>
+								<Skeleton className='w-full' />
+								<Skeleton className='w-full' />
+								<Skeleton className='w-[70px]' />
+								<Skeleton className='w-[70px]' />
+							</div>
+						</SwiperSlide>
+					))}
+			</Swiper>
+		</>
 	)
 
 	// console.log(data)
@@ -89,21 +102,23 @@ const Home = () => {
 					<h1 className='text-3xl font-semibold font-SourceSherif text-center'>
 						Women's Clothings
 					</h1>
-					<div className='flex justify-center items-center gap-10 font-poppins mt-5'>
+					<div className='flex md:justify-center items-center md:gap-6 gap-3 font-poppins mt-5 overflow-x-auto py-3'>
 						<span
-							className='cursor-pointer border-b border-b-gray-100 hover:border-b-gray-800 font-medium'
+							className='cursor-pointer  flex-none px-4 py-1 border border-gray-800 rounded-full hover:bg-black hover:text-white  font-medium'
 							onClick={() => setFilter(data)}>
 							All
 						</span>
 						{categoryWomens.map((item) => (
 							<span
-								className='cursor-pointer border-b border-b-gray-100 hover:border-b-gray-800 font-medium'
+								className='cursor-pointer  flex-none px-4 py-1 border border-gray-800 rounded-full hover:bg-black hover:text-white  font-medium'
 								onClick={() => FilterProduct(item)}>
 								{item}
 							</span>
 						))}
 					</div>
-					{isLoading ? <Loading /> : <Product data={filter} />}
+					<div className='my-5'>
+						{isLoading ? <Loading /> : <Product data={filter} />}
+					</div>
 				</div>
 			</div>
 		</div>
