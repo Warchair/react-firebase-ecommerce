@@ -7,14 +7,20 @@ import {
 import React from "react"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { actionType } from "../context/reducer"
-import { useStateValue } from "../context/stateProvider"
+// import { actionType } from "../context/reducer"
+// import { useStateValue } from "../context/stateProvider"
 import { auth } from "../firebase.config"
 import { Menu } from "@headlessui/react"
+import { useDispatch, useSelector } from "react-redux"
+import { getUser, Login } from "../redux/userSlice/userSlice"
+import { setNotice } from "../redux/notificationSlice/notificationSlice"
+import { getCart } from "../redux/cartSlice/cartSlice"
 
 const Navbar = () => {
-	const [isOpen, setIsOpen] = useState(false)
-	const [{ user }, dispatch] = useStateValue()
+	const [isOpen, setIsOpen] = useState(true)
+	const dispatch = useDispatch()
+	const user = useSelector(getUser)
+	const cart = useSelector(getCart)
 
 	const handleLogin = async () => {
 		const provider = new GoogleAuthProvider()
@@ -23,16 +29,28 @@ const Navbar = () => {
 
 	const handleLogout = () => {
 		signOut(auth)
+		dispatch(
+			setNotice({ field: true, status: "danger", msg: "Anda telah Logout" }),
+		)
 	}
 
 	// console.log(user)
 
+	// useEffect(() => {
+	// 	const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+	// 		dispatch({
+	// 			type: actionType.SET_USER,
+	// 			user: currentUser?.providerData[0],
+	// 		})
+	// 	})
+	// 	return () => {
+	// 		unsubscribe
+	// 	}
+	// }, [])
+
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-			dispatch({
-				type: actionType.SET_USER,
-				user: currentUser?.providerData[0],
-			})
+			dispatch(Login(currentUser?.providerData[0]))
 		})
 		return () => {
 			unsubscribe
@@ -108,7 +126,7 @@ const Navbar = () => {
 								</svg>
 								<p className='lg:hidden block text-left '>Cart</p>
 								<div className='lg:absolute -top-3 -right-3 text-xs w-6 h-6 bg-blue-400 rounded-full text-white flex justify-center items-center'>
-									<p>12</p>
+									<p>{cart.length}</p>
 								</div>
 							</Link>
 							{user ? (

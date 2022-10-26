@@ -3,16 +3,20 @@ import ReactDOM from "react-dom/client"
 import App from "./App"
 import "./css/index.css"
 import { BrowserRouter as Router } from "react-router-dom"
-import { StateProvider } from "./context/stateProvider"
-import { Reducer } from "./context/reducer"
-import { InitialState } from "./context/initialState"
+import { Provider } from "react-redux"
+import { store } from "./redux/store/store"
+import { getDataFromFirebase } from "./redux/productSlice/productSlice"
+import { StrictMode } from "react"
 
+store.dispatch(getDataFromFirebase())
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<Router>
-		<StateProvider reducer={Reducer} initialState={InitialState}>
-			<React.StrictMode>
-				<App />
-			</React.StrictMode>
-		</StateProvider>
-	</Router>,
+	<StrictMode>
+		<Router>
+			<Provider store={store}>
+				<React.StrictMode>
+					<App />
+				</React.StrictMode>
+			</Provider>
+		</Router>
+	</StrictMode>,
 )

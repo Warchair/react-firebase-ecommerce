@@ -1,74 +1,16 @@
-import { collection, getDocs } from "firebase/firestore"
 import React, { useState, useEffect } from "react"
-import hero from "../assets/HeroImage.png"
-import { Product } from "../component/product"
-import { db } from "../firebase.config"
-import { categoryWomens } from "./AddProduct"
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
+import hero from "../../assets/HeroImage.png"
+import { categoryWomens } from "../addProduct/AddProduct"
 import { Swiper, SwiperSlide } from "swiper/react"
 // Import Swiper styles
 import "swiper/css"
 // import required modules
 import { FreeMode } from "swiper"
 import "react-loading-skeleton/dist/skeleton.css"
+import Products from "../../organism/products/products"
 
 const Home = () => {
-	const [data, setData] = useState([])
-	const [filter, setFilter] = useState(data)
-	const [isLoading, setIsLoading] = useState(true)
-
-	useEffect(() => {
-		const getData = async () => {
-			setIsLoading(true)
-			const collectionsWomens = collection(db, "women's")
-			const Womens = await getDocs(collectionsWomens)
-			const DataWomens = Womens.docs.map((doc) => ({
-				...doc.data(),
-				id: doc.id,
-			}))
-			setData(DataWomens)
-			setFilter(DataWomens)
-			setIsLoading(false)
-		}
-		return () => {
-			getData()
-		}
-	}, [])
-
-	const FilterProduct = (e) => {
-		const filtering = data.filter((item) => item.category === e)
-		setFilter(filtering)
-	}
-
-	const Loading = () => (
-		<>
-			<Swiper
-				freeMode={true}
-				grabCursor={true}
-				modules={[FreeMode]}
-				slidesPerView={"auto"}
-				spaceBetween={30}
-				className='mt-5 flex flex-row gap-5 overflow-y-auto py-5 mySwiper'>
-				{Array(8)
-					.fill(1)
-					.map((el, i) => (
-						<SwiperSlide className='rounded-md border cursor-pointer w-[200px] flex-none'>
-							<div className='aspect-square w-full -mt-1'>
-								<Skeleton className='w-full h-full' />
-							</div>
-							<div className='p-2'>
-								<Skeleton className='w-full' />
-								<Skeleton className='w-full' />
-								<Skeleton className='w-[70px]' />
-								<Skeleton className='w-[70px]' />
-							</div>
-						</SwiperSlide>
-					))}
-			</Swiper>
-		</>
-	)
-
-	// console.log(data)
+	const [filter, setFilter] = useState("All")
 
 	return (
 		<div>
@@ -105,19 +47,20 @@ const Home = () => {
 					<div className='flex md:justify-center items-center md:gap-6 gap-3 font-poppins mt-5 overflow-x-auto py-3'>
 						<span
 							className='cursor-pointer  flex-none px-4 py-1 border border-gray-800 rounded-full hover:bg-black hover:text-white  font-medium'
-							onClick={() => setFilter(data)}>
+							onClick={() => setFilter("All")}>
 							All
 						</span>
-						{categoryWomens.map((item) => (
+						{categoryWomens.map((item, index) => (
 							<span
+								key={index}
 								className='cursor-pointer  flex-none px-4 py-1 border border-gray-800 rounded-full hover:bg-black hover:text-white  font-medium'
-								onClick={() => FilterProduct(item)}>
+								onClick={() => setFilter(item)}>
 								{item}
 							</span>
 						))}
 					</div>
 					<div className='my-5'>
-						{isLoading ? <Loading /> : <Product data={filter} />}
+						<Products filter={filter} />
 					</div>
 				</div>
 			</div>

@@ -1,19 +1,18 @@
 import { useState } from "react"
-import Cart from "./component/cart"
-import DetailProduct from "./component/detailProduct"
-import Home from "./component/home"
-import Navbar from "./component/navbar"
+import Home from "./page/home/home"
+import DetailProduct from "./page/detailProduct/detailProduct"
 import { Routes, Route } from "react-router-dom"
-import AddProduct from "./component/AddProduct"
-import Protected from "./component/protected"
+import Protected from "./component/protected/protected"
+import Layout from "./layout/layout"
+import AddProduct from "./page/addProduct/AddProduct"
+import Cart from "./page/cart/cart"
 
 function App() {
 	return (
-		<div className='font-poppins bg-white  w-full min-h-screen relative'>
-			<Navbar />
-			<div className='pt-[72px]'>
-				<Routes>
-					<Route path='/' element={<Home />} />
+		<div>
+			<Routes>
+				<Route path='/' element={<Layout />}>
+					<Route index element={<Home />} />
 					<Route
 						path='/cart'
 						element={
@@ -31,8 +30,8 @@ function App() {
 						}
 					/>
 					<Route path='/product/:type/:id' element={<DetailProduct />} />
-				</Routes>
-			</div>
+				</Route>
+			</Routes>
 		</div>
 	)
 }

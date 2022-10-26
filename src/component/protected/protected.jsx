@@ -1,9 +1,10 @@
 import React from "react"
-import { useStateValue } from "../context/stateProvider"
-import img from "../assets/login.jpg"
+import { useSelector } from "react-redux"
+import img from "../../assets/login.jpg"
+import { getUser } from "../../redux/userSlice/userSlice"
 
 const Protected = ({ children }) => {
-	const [{ user }, dispatch] = useStateValue()
+	const user = useSelector(getUser)
 	return (
 		<div className='xl:container xl:mx-auto'>
 			{!user ? (
